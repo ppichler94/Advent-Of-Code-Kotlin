@@ -1,7 +1,7 @@
 package lib
 
-enum class PartName {
-    A, B
+enum class PartName(val value: Int) {
+    A(1), B(2)
 }
 
 abstract class Part(private val partName: PartName) {

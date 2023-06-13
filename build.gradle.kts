@@ -10,3 +10,7 @@ repositories {
 kotlin {
     jvmToolchain(17)
 }
+
+dependencies {
+    implementation("org.jsoup:jsoup:1.14.3")
+}
