@@ -38,13 +38,13 @@ class Puzzle(private val day: Int, private val year: Int) {
         val answerFile = File(".data/$year/$day/answer_${partName.value}.txt")
         answerFile.parentFile.mkdirs()
         if (answerFile.exists() && answerFile.readText() == solution) {
-            println("Answer $solution is correct")
+            Util.printlnColored("  >> Answer $solution is correct", Util.Color.GREEN)
             return true
         }
 
         val incorrectAnswersFile = File(".data/$year/$day/incorrect_answers_${partName.value}.txt")
         if (incorrectAnswersFile.exists() && incorrectAnswersFile.readLines().contains(solution)) {
-            println("Answer $solution was incorrect")
+            Util.printlnColored("  >> Answer $solution was incorrect", Util.Color.RED)
             return true
         }
 
@@ -53,19 +53,19 @@ class Puzzle(private val day: Int, private val year: Int) {
 
     private fun postAnswer(partName: PartName, solution: String): Boolean {
         val url = "$baseUrl/answer"
-//        val url = "https://httpbin.org/post"
         val client = HttpClient.newBuilder().build()
         val request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .header("cookie", "session=$sessionId")
             .header("Content-Type", "application/x-www-form-urlencoded")
+            .header("User-Agent", "github.com/ppichler94/advent-of-code-kotlin by ppichler@outlook.at")
             .POST(postBodyData(partName, solution))
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() != 200) {
             throw IllegalStateException("submit answer failed. Got ${response.statusCode()} status code")
         }
-        if (response.body().contains("the right answer")) {
+        if (response.body().contains("the right answer") or response.body().contains("Did you already complete it")) {
             return true
         }
         return false
@@ -112,6 +112,7 @@ class Puzzle(private val day: Int, private val year: Int) {
         val request = HttpRequest.newBuilder()
             .uri(URI.create(inputUrl))
             .header("cookie", "session=$sessionId")
+            .header("User-Agent", "github.com/ppichler94/advent-of-code-kotlin by ppichler@outlook.at")
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() == 200) {
@@ -154,11 +155,12 @@ class Puzzle(private val day: Int, private val year: Int) {
     }
 
     private fun fetchProse(): String {
-        val url = "$baseUrl"
+        val url = baseUrl
         val client = HttpClient.newBuilder().build()
         val request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .header("cookie", "session=$sessionId")
+            .header("User-Agent", "github.com/ppichler94/advent-of-code-kotlin by ppichler@outlook.at")
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() == 200) {

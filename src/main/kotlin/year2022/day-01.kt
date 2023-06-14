@@ -2,13 +2,13 @@ package year2022
 
 import lib.Day
 import lib.Part
-import lib.PartName
+import lib.TestCase
 
 fun main() {
     Day(1, 2022, PartA(), PartB()).run()
 }
 
-open class PartA(partName: PartName = PartName.A) : Part(partName) {
+open class PartA : Part() {
     internal lateinit var calories: List<Int>
     override fun parse(text: String) {
         calories = text.split("\n\n")
@@ -18,19 +18,22 @@ open class PartA(partName: PartName = PartName.A) : Part(partName) {
     }
 
     override fun compute(): String {
-        return "24000"
-//        return calories.max().toString()
+        return calories.max().toString()
     }
 
     override val exampleAnswer: String
         get() = "24000"
 }
 
-class PartB : PartA(PartName.B) {
+class PartB : PartA() {
     override fun compute(): String {
-        return calories.sorted().take(3).sum().toString()
+        return calories.sortedDescending().take(3).sum().toString()
     }
 
     override val exampleAnswer: String
         get() = "45000"
+
+    override val testCases = sequence<TestCase> {
+        yield(TestCase("test1", "10\n10\n10\n\n10\n10\n\n10\n10\n\n10", "70"))
+    }
 }
