@@ -27,8 +27,10 @@ class Puzzle(private val day: Int, private val year: Int) {
         if (!alreadyAnswered) {
             val correct = postAnswer(partName, solution)
             if (correct) {
+                Util.printlnColored("  >> Answer $solution is correct", Util.Color.GREEN)
                 storeCorrectAnswer(partName, solution)
             } else {
+                Util.printlnColored("  >> Answer $solution was incorrect", Util.Color.RED)
                 storeIncorrectAnswer(partName, solution)
             }
         }

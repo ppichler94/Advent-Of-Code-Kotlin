@@ -51,7 +51,13 @@ abstract class Part() {
     private fun runPuzzle(inputData: String): String {
         println("Running puzzle...")
         parse(inputData)
-        return compute()
+        var solution: String
+        val runtime = measureTimeMillis {
+            solution = compute()
+        }
+        val runtimeString = "%.2f".format(runtime.toDouble() / 1000)
+        println("  >> Runtime: ${runtimeString}s")
+        return solution
     }
 
     open val testCases = sequence<TestCase> {}

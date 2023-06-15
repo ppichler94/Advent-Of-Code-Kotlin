@@ -6,8 +6,10 @@ class Day(private val day: Int, private val year: Int, private val partA: Part?,
 
         println("=== Part A ===")
         partA?.run(puzzle, PartName.A)
+        println()
 
         println("=== Part B ===")
         partB?.run(puzzle, PartName.B)
+        println()
     }
 }
