@@ -5,10 +5,10 @@ import lib.Part
 import lib.TestCase
 
 fun main() {
-    Day(1, 2022, PartA(), PartB()).run()
+    Day(1, 2022, PartA1(), PartB1()).run()
 }
 
-open class PartA : Part() {
+open class PartA1 : Part() {
     internal lateinit var calories: List<Int>
     override fun parse(text: String) {
         calories = text.split("\n\n")
@@ -25,7 +25,7 @@ open class PartA : Part() {
         get() = "24000"
 }
 
-class PartB : PartA() {
+class PartB1 : PartA1() {
     override fun compute(): String {
         return calories.sortedDescending().take(3).sum().toString()
     }
