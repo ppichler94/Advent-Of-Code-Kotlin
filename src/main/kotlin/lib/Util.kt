@@ -4,6 +4,7 @@ class Util {
     enum class Color(val code: Int) {
         RED(31),
         GREEN(32),
+        YELLOW(33),
     }
 
     companion object {

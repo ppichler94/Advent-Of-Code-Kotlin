@@ -39,8 +39,13 @@ class Puzzle(private val day: Int, private val year: Int) {
     private fun checkPreviousAnswers(partName: PartName, solution: String): Boolean {
         val answerFile = File(".data/$year/$day/answer_${partName.value}.txt")
         answerFile.parentFile.mkdirs()
-        if (answerFile.exists() && answerFile.readText() == solution) {
-            Util.printlnColored("  >> Answer $solution is correct", Util.Color.GREEN)
+        if (answerFile.exists()) {
+            if (answerFile.readText() == solution) {
+                Util.printlnColored("  >> Answer $solution is correct", Util.Color.GREEN)
+            } else {
+                Util.printlnColored("  >> Answer $solution was incorrect", Util.Color.RED)
+                Util.printlnColored("  >> Already answered. Correct answer is ${answerFile.readText()}", Util.Color.YELLOW)
+            }
             return true
         }
 
@@ -139,7 +144,7 @@ class Puzzle(private val day: Int, private val year: Int) {
 
     private fun fetchExampleData(): String {
         val prose = getProse()
-        return Jsoup.parse(prose).select("pre code").html().trim()
+        return Jsoup.parse(prose).selectFirst("pre code")?.html()?.trim() ?: ""
     }
 
     private fun getProse(): String {
