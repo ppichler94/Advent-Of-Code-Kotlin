@@ -54,7 +54,7 @@ class ApiClient(year: Int, day: Int) {
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() == 200) {
-            return response.body().trim()
+            return response.body().trimEnd()
         }
         throw IllegalStateException("Error fetching input data: ${response.body()}")
     }

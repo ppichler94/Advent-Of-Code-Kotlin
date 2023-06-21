@@ -65,7 +65,7 @@ class Puzzle(day: Int, year: Int) {
 
     private fun fetchExampleData(): String {
         val prose = getProse()
-        return Jsoup.parse(prose).selectFirst("pre code")?.html()?.trim() ?: ""
+        return Jsoup.parse(prose).selectFirst("pre code")?.wholeText()?.trimEnd() ?: ""
     }
 
     private fun getProse(): String {
