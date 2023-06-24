@@ -1,7 +1,5 @@
 package lib
 
-import org.jsoup.Jsoup
-
 class Puzzle(day: Int, year: Int) {
 
     val exampleData: String
@@ -59,18 +57,7 @@ class Puzzle(day: Int, year: Int) {
 
     private fun readExampleData(): String {
         return cache.readFileOrElse("example") {
-            fetchExampleData()
-        }
-    }
-
-    private fun fetchExampleData(): String {
-        val prose = getProse()
-        return Jsoup.parse(prose).selectFirst("pre code")?.wholeText()?.trimEnd() ?: ""
-    }
-
-    private fun getProse(): String {
-        return cache.readFileOrElse("prose") {
-            apiClient.fetchProse()
+            apiClient.fetchExampleData()
         }
     }
 }

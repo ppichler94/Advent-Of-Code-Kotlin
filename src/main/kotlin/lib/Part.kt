@@ -22,7 +22,8 @@ abstract class Part() {
 
     private fun runTests(exampleInput: String): Boolean {
         println("Running tests...")
-        val exampleSuccessful = runTest(TestCase("Example", exampleInput, exampleAnswer))
+        val exampleData = customExampleData ?: exampleInput
+        val exampleSuccessful = runTest(TestCase("Example", exampleData, exampleAnswer))
         val testsSuccessful = testCases.all { runTest(it) }
         return exampleSuccessful and testsSuccessful
     }
@@ -62,8 +63,8 @@ abstract class Part() {
 
     open val testCases = sequence<TestCase> {}
 
-    open val customExampleData: String
-        get() = ""
+    open val customExampleData: String?
+        get() = null
 
     abstract val exampleAnswer: String
 }
