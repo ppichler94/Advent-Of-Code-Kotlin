@@ -1,10 +1,15 @@
 package lib.math
 
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
+
 open class Vector2i(open val x: Int, open val y: Int) {
     operator fun plus(v: Vector2i) = Vector2i(x + v.x, y + v.y)
     operator fun minus(v: Vector2i) = Vector2i(x - v.x, y - v.y)
     operator fun times(v: Int) = Vector2i(x * v, y * v)
+    operator fun times(v: Float) = Vector2i((x * v).roundToInt(), (y * v).roundToInt())
     operator fun div(v: Int) = Vector2i(x / v, y / v)
+    operator fun div(v: Float) = Vector2i((x / v).roundToInt(), (y / v).roundToInt())
 
     operator fun unaryMinus() = Vector2i(-x, -y)
 
@@ -16,6 +21,8 @@ open class Vector2i(open val x: Int, open val y: Int) {
 
     infix fun within(range: Iterable<Int>) = (x in range) && (y in range)
     infix fun within(range: List<Iterable<Int>>) = (x in range[0]) && (y in range[1])
+
+    fun length() = sqrt((x*x + y*y).toFloat())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
