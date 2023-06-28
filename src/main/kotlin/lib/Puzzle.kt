@@ -16,6 +16,11 @@ class Puzzle(day: Int, year: Int) {
     fun submit(partName: PartName, solution: String) {
         val alreadyAnswered = checkPreviousAnswers(partName, solution)
         if (!alreadyAnswered) {
+            println("Submit? (y/[n])")
+            val userInput = readln()
+            if (userInput != "y") {
+                return
+            }
             val correct = apiClient.postAnswer(partName, solution)
             if (correct) {
                 Util.printlnColored("  >> Answer $solution is correct", Util.Color.GREEN)
