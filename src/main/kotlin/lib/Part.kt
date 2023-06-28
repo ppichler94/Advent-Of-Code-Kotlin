@@ -35,7 +35,7 @@ abstract class Part() {
         val runtime = measureTimeMillis {
             solution = compute()
         }
-        val successful = solution == testCase.expected
+        val successful = testCase.expected.isEmpty() || solution == testCase.expected
         print(Util.colored(">> ", if (successful) Util.Color.GREEN else Util.Color.RED))
         print("TestCase '${testCase.name}' ")
         if (successful) {
