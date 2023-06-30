@@ -13,6 +13,9 @@ fun main() {
 open class PartA8 : Part() {
     lateinit var trees: List<List<Int>>
     lateinit var limits: Iterable<Int>
+
+    operator fun List<List<Int>>.get(pos: Vector2i) = this[pos.y][pos.x]
+
     override fun parse(text: String) {
         trees = text
             .split("\n")
@@ -36,9 +39,9 @@ open class PartA8 : Part() {
         var currentHeight = -1
         val visible = mutableSetOf<Vector2i>()
         while (currentPos within limits) {
-            if (trees[currentPos.y][currentPos.x] > currentHeight) {
+            if (trees[currentPos] > currentHeight) {
                 visible.add(currentPos.toVector())
-                currentHeight = trees[currentPos.y][currentPos.x]
+                currentHeight = trees[currentPos]
             }
             currentPos += direction
         }
@@ -47,7 +50,6 @@ open class PartA8 : Part() {
 
     override val exampleAnswer: String
         get() = "21"
-
 }
 
 class PartB8 : PartA8() {
@@ -68,7 +70,7 @@ class PartB8 : PartA8() {
         var score = 0
         while (currentPos within limits) {
             score += 1
-            if (trees[currentPos.y][currentPos.x] >= trees[position.y][position.x]) {
+            if (trees[currentPos] >= trees[position]) {
                 break
             }
             currentPos += direction
