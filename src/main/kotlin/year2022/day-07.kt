@@ -111,7 +111,7 @@ class PartB7 : PartA7() {
         get() = "24933642"
 }
 
-val day7exampleInput = """
+private val day7exampleInput = """
 $ cd /
 $ ls
 dir a

@@ -33,7 +33,7 @@ class PartB1 : PartA1() {
     override val exampleAnswer: String
         get() = "45000"
 
-    override val testCases = sequence<TestCase> {
+    override val testCases = sequence {
         yield(TestCase("test1", "10\n10\n10\n\n10\n10\n\n10\n10\n\n10", "70"))
     }
 }
