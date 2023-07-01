@@ -42,13 +42,12 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
     }
 
     override fun compute(): String {
-        return startPositions.minOf(::bfs).toString()
+        return bfs(startPositions).toString()
     }
 
-    private fun bfs(start: Vector2i): Int {
-        val root = Node(start, null)
-        val queue = mutableListOf(root)
-        val visited = mutableSetOf(start)
+    private fun bfs(start: List<Vector2i>): Int {
+        val queue = start.map { Node(it, null) }.toMutableList()
+        val visited = start.toMutableSet()
         while (queue.isNotEmpty()) {
             val current = queue.removeFirst()
             val children = nextPositions(current.pos).filter { !visited.contains(it) }.toList()
