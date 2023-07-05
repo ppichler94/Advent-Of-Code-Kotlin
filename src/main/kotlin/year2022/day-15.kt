@@ -2,7 +2,7 @@ package year2022
 
 import lib.Day
 import lib.Part
-import lib.math.Vector2i
+import lib.math.Vector
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -12,7 +12,7 @@ fun main() {
 
 
 open class PartA15 : Part() {
-    data class Sensor(val position: Vector2i, val closestBeacon: Vector2i) {
+    data class Sensor(val position: Vector, val closestBeacon: Vector) {
         private val beaconRadius = abs(position.x - closestBeacon.x) + abs(position.y - closestBeacon.y)
 
         fun coverageAtLevel(yLevel: Int): Pair<Int, Int>? {
@@ -27,7 +27,7 @@ open class PartA15 : Part() {
             fun ofText(text: String): Sensor {
                 val matcher = """Sensor at x=(.*), y=(.*): closest beacon is at x=(.*), y=(.*)""".toRegex().matchEntire(text)
                 val (sensorX, sensorY, beaconX, beaconY) = matcher!!.destructured
-                return Sensor(Vector2i(sensorX.toInt(), sensorY.toInt()), Vector2i(beaconX.toInt(), beaconY.toInt()))
+                return Sensor(Vector(sensorX.toInt(), sensorY.toInt()), Vector(beaconX.toInt(), beaconY.toInt()))
             }
         }
     }

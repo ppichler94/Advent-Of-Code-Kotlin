@@ -1,74 +1,148 @@
 package lib.math
 
-import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-open class Vector2i(open val x: Int, open val y: Int) {
-    operator fun plus(v: Vector2i) = Vector2i(x + v.x, y + v.y)
-    operator fun minus(v: Vector2i) = Vector2i(x - v.x, y - v.y)
-    operator fun times(v: Int) = Vector2i(x * v, y * v)
-    operator fun times(v: Float) = Vector2i((x * v).roundToInt(), (y * v).roundToInt())
-    operator fun div(v: Int) = Vector2i(x / v, y / v)
-    operator fun div(v: Float) = Vector2i((x / v).roundToInt(), (y / v).roundToInt())
+open class Vector(open val data: Array<Int>) {
+    constructor(vararg data: Int) : this(data.toTypedArray())
+    constructor(data: List<Int>) : this(data.toTypedArray())
 
-    operator fun unaryMinus() = Vector2i(-x, -y)
+    open val x: Int
+        get() = data[0]
 
-    operator fun get(index: Int) = when(index) {
-        0 -> x
-        1 -> y
-        else -> throw IllegalArgumentException("index must be in 0..1")
+    open val y: Int
+        get() = data[1]
+
+    open val z: Int
+        get() {
+            check(data.size > 2) { "A vector of size ${data.size} does not have component z" }
+            return data[2]
+        }
+
+    open val w: Int
+    get() {
+        check(data.size > 3) { "A vector of size ${data.size} does not have component w" }
+        return data[3]
     }
 
-    infix fun within(range: Iterable<Int>) = (x in range) && (y in range)
-    infix fun within(range: List<Iterable<Int>>) = (x in range[0]) && (y in range[1])
+    operator fun get(index: Int): Int  {
+        if (index >= data.size) {
+            throw IllegalArgumentException("index must be in 0..${data.size - 1}")
+        }
+        return data[index]
+    }
 
-    fun length() = sqrt((x*x + y*y).toFloat())
+    fun length() = sqrt(data.map { (it*it).toFloat() }.sum())
+
+    infix fun within(range: Iterable<Int>) = data.all { it in range }
+    infix fun within(range: List<Iterable<Int>>): Boolean {
+        if (range.size < data.size) {
+            throw IllegalArgumentException("length of range != length of vector")
+        }
+        return (data zip range).all { it.first in it.second }
+    }
+
+    fun toMutableVector() = MutableVector(data.copyOf())
+
+    override fun toString(): String = "Vector(${data.joinToString()})"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        val vec = other as? Vector2i ?: return false
+        if (javaClass != other?.javaClass) return false
 
-        if (x != vec.x) return false
-        return y == vec.y
+        val vec = other as? Vector ?: return false
+
+        return data.contentEquals(vec.data)
     }
 
     override fun hashCode(): Int {
-        var result = x
-        result = 31 * result + y
+        return data.contentHashCode()
+    }
+}
+
+class MutableVector(override val data: Array<Int>) : Vector(data) {
+    constructor(vararg data: Int) : this(data.toTypedArray())
+
+    override var x: Int
+        get() = data[0]
+        set(v) { data[0] = v }
+
+    override var y: Int
+        get() = data[1]
+        set(v) { data[1] = v }
+
+    override var z: Int
+        get() {
+            check(data.size > 2) { "A vector of size ${data.size} does not have component z" }
+            return data[2]
+        }
+        set(v) {
+            check(data.size > 2) { "A vector of size ${data.size} does not have component z" }
+            data[2] = v
+        }
+
+    override var w: Int
+        get() {
+            check(data.size > 3) { "A vector of size ${data.size} does not have component w" }
+            return data[2]
+        }
+        set(v) {
+            check(data.size > 3) { "A vector of size ${data.size} does not have component w" }
+            data[3] = v
+        }
+
+    operator fun set(index: Int, v: Int) {
+        if (index >= data.size) {
+            throw IllegalArgumentException("index must be in 0..${data.size - 1}")
+        }
+        data[index] = v
+    }
+
+    fun toVector() = Vector(data.copyOf())
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+        other as MutableVector
+
+        return data.contentEquals(other.data)
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + data.contentHashCode()
         return result
     }
 
-    override fun toString(): String = "Vector2i($x, $y)"
-
-    fun toMutableVector() = MutableVector2i(x, y)
+    override fun toString(): String = "MutableVector(${data.joinToString()})"
 }
 
-data class MutableVector2i(override var x: Int, override var y: Int) : Vector2i(x, y) {
-    operator fun plusAssign(v: Vector2i) {
-        x += v.x
-        y += v.y
-    }
-    operator fun minusAssign(v: Vector2i) {
-        x -= v.x
-        y -= v.y
-    }
-    operator fun timesAssign(v: Int) {
-        x *= v
-        y *= v
-    }
-    operator fun divAssign(v: Int) {
-        x /= v
-        y /= v
-    }
+operator fun Vector.plus(other: Vector) = Vector((data zip other.data).map{ it.first + it.second })
+operator fun <T: Vector> T.minus(other: Vector) = Vector((data zip other.data).map{ it.first - it.second })
+operator fun <T: Vector> T.times(other: Int) = Vector(data.map{ it * other })
+operator fun <T: Vector> T.times(other: Float) = Vector(data.map{ (it * other).toInt() })
+operator fun <T: Vector> T.div(other: Int) = Vector(data.map{ it / other })
+operator fun <T: Vector> T.div(other: Float) = Vector(data.map{ (it / other).toInt() })
+operator fun <T: Vector> T.unaryMinus() = Vector(data.map { -it })
 
-    operator fun inc() = MutableVector2i(x + 1, y + 1)
-    operator fun dec() = MutableVector2i(x - 1, y - 1)
-
-    operator fun set(index: Int, v: Int) = when(index) {
-        0 -> x = v
-        1 -> y = v
-        else -> throw IllegalArgumentException("index must be in 0..1")
+operator fun MutableVector.plusAssign(v: Vector) {
+    for (i in this.data.indices) {
+        data[i] += v.data[i]
     }
-
-    fun toVector() = Vector2i(x, y)
+}
+operator fun MutableVector.minusAssign(v: Vector) {
+    for (i in this.data.indices) {
+        data[i] -= v.data[i]
+    }
+}
+operator fun MutableVector.timesAssign(other: Int) {
+    for (i in this.data.indices) {
+        data[i] *= other
+    }
+}
+operator fun MutableVector.divAssign(other: Int) {
+    for (i in this.data.indices) {
+        data[i] /= other
+    }
 }

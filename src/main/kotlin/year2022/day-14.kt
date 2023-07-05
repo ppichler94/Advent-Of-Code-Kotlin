@@ -2,7 +2,9 @@ package year2022
 
 import lib.Day
 import lib.Part
-import lib.math.Vector2i
+import lib.math.Vector
+import lib.math.minus
+import lib.math.plus
 import kotlin.math.max
 import kotlin.math.min
 
@@ -12,8 +14,8 @@ fun main() {
 
 
 open class PartA14 : Part() {
-    internal lateinit var cave: MutableSet<Vector2i>
-    internal lateinit var sand: MutableSet<Vector2i>
+    internal lateinit var cave: MutableSet<Vector>
+    internal lateinit var sand: MutableSet<Vector>
     internal var maxY = 0
 
     override fun parse(text: String) {
@@ -33,7 +35,7 @@ open class PartA14 : Part() {
 
                     maxY = max(maxY, yEnd)
                     (yStart .. yEnd).forEach { y ->
-                        (xStart..xEnd).forEach { x -> cave.add(Vector2i(x, y)) }
+                        (xStart..xEnd).forEach { x -> cave.add(Vector(x, y)) }
                     }
                 }
             }
@@ -49,12 +51,12 @@ open class PartA14 : Part() {
         }
     }
 
-    var vecLeft = Vector2i(-1, 0)
-    var vecRight = Vector2i(1, 0)
-    var vecDown = Vector2i(0, 1)
+    private var vecLeft = Vector(-1, 0)
+    private var vecRight = Vector(1, 0)
+    private var vecDown = Vector(0, 1)
 
     internal fun addSand(): Boolean {
-        var pos = Vector2i(500, 0)
+        var pos = Vector(500, 0)
         while (true) {
             if (pos.y > maxY) {
                 return false
@@ -73,7 +75,7 @@ open class PartA14 : Part() {
         }
     }
 
-    private fun collides(pos: Vector2i) = pos in cave || pos in sand
+    private fun collides(pos: Vector) = pos in cave || pos in sand
 
     override val exampleAnswer: String
         get() = "24"
@@ -82,11 +84,11 @@ open class PartA14 : Part() {
 class PartB14 : PartA14() {
     override fun compute(): String {
         sand = mutableSetOf()
-        (0 until 1000).forEach { cave.add(Vector2i(it, maxY + 2)) }
+        (0 until 1000).forEach { cave.add(Vector(it, maxY + 2)) }
         maxY += 3
         while (true) {
             addSand()
-            if (Vector2i(500, 0) in sand) {
+            if (Vector(500, 0) in sand) {
                 return sand.size.toString()
             }
         }

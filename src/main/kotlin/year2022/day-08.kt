@@ -2,8 +2,7 @@ package year2022
 
 import lib.Day
 import lib.Part
-import lib.math.Vector2i
-import lib.math.product
+import lib.math.*
 
 fun main() {
     Day(8, 2022, PartA8(), PartB8()).run()
@@ -14,7 +13,7 @@ open class PartA8 : Part() {
     lateinit var trees: List<List<Int>>
     lateinit var limits: Iterable<Int>
 
-    operator fun List<List<Int>>.get(pos: Vector2i) = this[pos.y][pos.x]
+    operator fun List<List<Int>>.get(pos: Vector) = this[pos.y][pos.x]
 
     override fun parse(text: String) {
         trees = text
@@ -24,20 +23,20 @@ open class PartA8 : Part() {
     }
 
     override fun compute(): String {
-        val visible = mutableSetOf<Vector2i>()
+        val visible = mutableSetOf<Vector>()
         limits.forEach {
-            visible.addAll(walkLine(Vector2i(0, it), Vector2i(1, 0)))
-            visible.addAll(walkLine(Vector2i(trees.size - 1, it), Vector2i(-1, 0)))
-            visible.addAll(walkLine(Vector2i(it, 0), Vector2i(0, 1)))
-            visible.addAll(walkLine(Vector2i(it, trees.size - 1), Vector2i(0, -1)))
+            visible.addAll(walkLine(Vector(0, it), Vector(1, 0)))
+            visible.addAll(walkLine(Vector(trees.size - 1, it), Vector(-1, 0)))
+            visible.addAll(walkLine(Vector(it, 0), Vector(0, 1)))
+            visible.addAll(walkLine(Vector(it, trees.size - 1), Vector(0, -1)))
         }
         return visible.size.toString()
     }
 
-    private fun walkLine(startPos: Vector2i, direction: Vector2i): MutableSet<Vector2i> {
+    private fun walkLine(startPos: Vector, direction: Vector): MutableSet<Vector> {
         val currentPos = startPos.toMutableVector()
         var currentHeight = -1
-        val visible = mutableSetOf<Vector2i>()
+        val visible = mutableSetOf<Vector>()
         while (currentPos within limits) {
             if (trees[currentPos] > currentHeight) {
                 visible.add(currentPos.toVector())
@@ -60,12 +59,12 @@ class PartB8 : PartA8() {
     }
 
     private fun calculateScenicScore(value: Pair<Int, Int>): Int {
-        val position = Vector2i(value.first, value.second)
-        val directions = listOf(Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1))
+        val position = Vector(value.first, value.second)
+        val directions = listOf(Vector(-1, 0), Vector(1, 0), Vector(0, -1), Vector(0, 1))
         return directions.map { calculateScoreOfLine(position, it) }.reduce(Int::times)
     }
 
-    private fun calculateScoreOfLine(position: Vector2i, direction: Vector2i): Int {
+    private fun calculateScoreOfLine(position: Vector, direction: Vector): Int {
         val currentPos = (position + direction).toMutableVector()
         var score = 0
         while (currentPos within limits) {

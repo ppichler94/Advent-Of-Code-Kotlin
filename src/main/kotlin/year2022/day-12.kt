@@ -1,7 +1,8 @@
 package year2022
 
 import lib.*
-import lib.math.Vector2i
+import lib.math.Vector
+import lib.math.plus
 
 fun main() {
     Day(12, 2022, Part12('S', "31"), Part12('a', "29")).run()
@@ -10,19 +11,21 @@ fun main() {
 
 open class Part12(private val startChar: Char, private val example: String) : Part() {
     private lateinit var hillsMap: List<String>
-    private lateinit var startPositions: List<Vector2i>
-    private lateinit var endPosition: Vector2i
+    private lateinit var startPositions: List<Vector>
+    private lateinit var endPosition: Vector
     private lateinit var limits: List<IntRange>
+
+    operator fun List<String>.get(pos: Vector) = this[pos.y][pos.x]
 
     override fun parse(text: String) {
         hillsMap = text.split("\n")
         startPositions = hillsMap.flatMapIndexed { y, line ->
             line.mapIndexedNotNull { x, c ->
                 if (c == 'E') {
-                    endPosition = Vector2i(x, y)
+                    endPosition = Vector(x, y)
                 }
                 if (c == startChar) {
-                    Vector2i(x, y)
+                    Vector(x, y)
                 } else
                     null
             }
@@ -37,11 +40,11 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
         return traversal.getPath().size.toString()
     }
 
-    private fun neighbours(node: Vector2i): List<Vector2i> {
-        return listOf(Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1))
+    private fun neighbours(node: Vector): List<Vector> {
+        return listOf(Vector(-1, 0), Vector(1, 0), Vector(0, -1), Vector(0, 1))
             .map { it + node }
-            .filter { it.y in limits[0] && it.x in limits[1] }
-            .filter { elevationOfChar(hillsMap[it.y][it.x]) <= elevationOfChar(hillsMap[node.y][node.x]) + 1 }
+            .filter { it within listOf(limits[1], limits[0]) }
+            .filter { elevationOfChar(hillsMap[it]) <= elevationOfChar(hillsMap[node.y][node.x]) + 1 }
     }
 
     private fun elevationOfChar(c: Char) = when(c) {
