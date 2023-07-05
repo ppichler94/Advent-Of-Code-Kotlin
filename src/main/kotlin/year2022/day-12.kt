@@ -1,8 +1,6 @@
 package year2022
 
-import lib.Day
-import lib.Part
-import lib.Search
+import lib.*
 import lib.math.Vector2i
 
 fun main() {
@@ -33,8 +31,10 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
     }
 
     override fun compute(): String {
-        val result = Search.bfs(::neighbours, startPositions, endPosition)
-        return result.getPath(endPosition).size.toString()
+        val traversal = TraversalBreadthFirstSearch(::neighbours)
+            .startFrom(startPositions)
+            .goTo(endPosition)
+        return traversal.getPath().size.toString()
     }
 
     private fun neighbours(node: Vector2i): List<Vector2i> {
