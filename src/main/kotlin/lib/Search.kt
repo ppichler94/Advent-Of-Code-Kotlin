@@ -9,15 +9,17 @@ import java.util.PriorityQueue
 sealed class Traversal<T : Any> : Iterable<T> {
     protected var end: T? = null
     protected var cameFrom = mutableMapOf<T, T>()
-    protected lateinit var starts: List<T>
+    protected lateinit var current: T
+
+    val depth get() = getPath(current).size
+    val visited get() = cameFrom.keys
 
     /**
      * Starts the traversal at the specified vertex
      */
     fun startFrom(start: T): Traversal<T> {
-        starts = listOf(start)
         cameFrom[start] = start
-        init()
+        init(listOf(start))
         return this
     }
 
@@ -25,9 +27,8 @@ sealed class Traversal<T : Any> : Iterable<T> {
      * Starts the traversal at the specified vertices
      */
     fun startFrom(start: Iterable<T>): Traversal<T> {
-        starts = start.toList()
         cameFrom.putAll(start.associateWith { it })
-        init()
+        init(start.toList())
         return this
     }
 
@@ -88,7 +89,7 @@ sealed class Traversal<T : Any> : Iterable<T> {
         return this
     }
 
-    protected abstract fun init()
+    protected abstract fun init(starts: List<T>)
 
     protected abstract fun nextNode(): T
     protected abstract fun hasNextNode(): Boolean
@@ -114,19 +115,19 @@ sealed class Traversal<T : Any> : Iterable<T> {
  * an empty list should be returned
  *
  */
-class TraversalBreadthFirstSearch<T : Any>(private val neighbours: (T) -> List<T>) : Traversal<T>() {
+class TraversalBreadthFirstSearch<T : Any>(private val neighbours: (T, TraversalBreadthFirstSearch<T>) -> Iterable<T>) : Traversal<T>() {
     private var toVisit = ArrayDeque<T>()
 
-    override fun init() {
+    override fun init(starts: List<T>) {
         toVisit.addAll(starts)
     }
 
     override fun nextNode(): T {
-        val current = toVisit.removeFirst()
+        current = toVisit.removeFirst()
         if (current == end) {
             return current
         }
-        neighbours(current).forEach { next ->
+        neighbours(current, this).forEach { next ->
             if (next !in cameFrom) {
                 toVisit.add(next)
                 cameFrom[next] = current
@@ -143,33 +144,34 @@ class TraversalBreadthFirstSearch<T : Any>(private val neighbours: (T) -> List<T
  *
  * **Algorithm:** Dijkstra, non-recursive, using PriorityQueue (heap)
  *
- * @param neighbours This function should return the neighbours of the given vertex. If the vertex has no neighbours,
- * an empty list should be returned
- * @param cost This function should return the cost of going from the first vertex to the second vertex.
+ * @param neighbours This function should return the neighbours of the given vertex and the cost (distance) to
+ * travel to it. If the vertex has no neighbours, an empty iterable should be returned
  * @param maxCost Specifies the maximum allowed cost. If the cost to reach a vertex is higher than the maxCost, it is
  * not visited (or reported)
  *
  */
 class TraversalDijkstra<T : Any>(
-    private val neighbours: (T) -> List<T>,
-    private val cost: (T, T) -> Float,
+    private val neighbours: (T, TraversalDijkstra<T>) -> Iterable<Pair<T, Float>>,
     private val maxCost: Float = Float.MAX_VALUE,
 ) : Traversal<T>() {
     private val toVisit = PriorityQueue(compareBy<Pair<T, Float>> { it.second })
     private val costs = mutableMapOf<T, Float>()
 
-    override fun init() {
+    val distance get() = costs[current] ?: 0f
+
+    override fun init(starts: List<T>) {
         toVisit.addAll(starts.associateWith { 0f }.toList())
         costs.putAll(starts.associateWith { 0f })
     }
 
     override fun nextNode(): T {
-        val (current, _) = toVisit.remove()
+        val (c, _) = toVisit.remove()
+        current = c
         if (current == end) {
             return current
         }
-        neighbours(current).forEach { next ->
-            val nextCost = costs.getValue(current) + cost(current, next)
+        neighbours(current, this).forEach { (next, cost) ->
+            val nextCost = costs.getValue(current) + cost
             if (nextCost < maxCost && nextCost < costs.getOrDefault(next, Float.MAX_VALUE)) {
                 toVisit.add(next to nextCost)
                 cameFrom[next] = current
@@ -189,7 +191,8 @@ class TraversalDijkstra<T : Any>(
  *
  * @param neighbours This function should return the neighbours of the given vertex. If the vertex has no neighbours,
  * an empty list should be returned
- * @param cost This function should return the cost of going from the first vertex to the second vertex.
+ * @param neighbours This function should return the neighbours of the given vertex and the cost (distance) to
+ * travel to it. If the vertex has no neighbours, an empty iterable should be returned
  * @param heuristic This function specifies the heuristic of the search (i.e. how far away is the given vertex
  * from the end vertex)
  * @param maxCost Specifies the maximum allowed cost. If the cost to reach a vertex is higher than the maxCost, it is
@@ -197,26 +200,26 @@ class TraversalDijkstra<T : Any>(
  *
  */
 class TraversalAStar<T : Any>(
-    private val neighbours: (T) -> List<T>,
-    private val cost: (T, T) -> Float,
+    private val neighbours: (T, TraversalAStar<T>) -> Iterable<Pair<T, Float>>,
     private val heuristic: (T) -> Float,
     private val maxCost: Float = Float.MAX_VALUE,
 ) : Traversal<T>() {
     private val toVisit = PriorityQueue(compareBy<Pair<T, Float>> { it.second })
     private val costs = mutableMapOf<T, Float>()
 
-    override fun init() {
+    override fun init(starts: List<T>) {
         toVisit.addAll(starts.associateWith { 0f }.toList())
         costs.putAll(starts.associateWith { 0f })
     }
 
     override fun nextNode(): T {
-        val (current, _) = toVisit.remove()
+        val (c, _) = toVisit.remove()
+        current = c
         if (current == end) {
             return current
         }
-        neighbours(current).forEach { next ->
-            val nextCost = costs.getValue(current) + cost(current, next)
+        neighbours(current, this).forEach { (next, cost) ->
+            val nextCost = costs.getValue(current) + cost
             if (nextCost < maxCost && nextCost < costs.getOrDefault(next, Float.MAX_VALUE)) {
                 toVisit.add(next to nextCost + heuristic(current))
                 cameFrom[next] = current

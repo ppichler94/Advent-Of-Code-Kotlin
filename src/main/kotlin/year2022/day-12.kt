@@ -40,7 +40,7 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
         return traversal.getPath().size.toString()
     }
 
-    private fun neighbours(node: Vector): List<Vector> {
+    private fun neighbours(node: Vector, t: TraversalBreadthFirstSearch<Vector>): List<Vector> {
         return listOf(Vector(-1, 0), Vector(1, 0), Vector(0, -1), Vector(0, 1))
             .map { it + node }
             .filter { it within listOf(limits[1], limits[0]) }
