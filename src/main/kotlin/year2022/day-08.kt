@@ -25,10 +25,10 @@ open class PartA8 : Part() {
     override fun compute(): String {
         val visible = mutableSetOf<Vector>()
         limits.forEach {
-            visible.addAll(walkLine(Vector(0, it), Vector(1, 0)))
-            visible.addAll(walkLine(Vector(trees.size - 1, it), Vector(-1, 0)))
-            visible.addAll(walkLine(Vector(it, 0), Vector(0, 1)))
-            visible.addAll(walkLine(Vector(it, trees.size - 1), Vector(0, -1)))
+            visible.addAll(walkLine(Vector.at(0, it), Vector.at(1, 0)))
+            visible.addAll(walkLine(Vector.at(trees.size - 1, it), Vector.at(-1, 0)))
+            visible.addAll(walkLine(Vector.at(it, 0), Vector.at(0, 1)))
+            visible.addAll(walkLine(Vector.at(it, trees.size - 1), Vector.at(0, -1)))
         }
         return visible.size.toString()
     }
@@ -59,8 +59,8 @@ class PartB8 : PartA8() {
     }
 
     private fun calculateScenicScore(value: Pair<Int, Int>): Int {
-        val position = Vector(value.first, value.second)
-        val directions = listOf(Vector(-1, 0), Vector(1, 0), Vector(0, -1), Vector(0, 1))
+        val position = Vector.at(value.first, value.second)
+        val directions = listOf(Vector.at(-1, 0), Vector.at(1, 0), Vector.at(0, -1), Vector.at(0, 1))
         return directions.map { calculateScoreOfLine(position, it) }.reduce(Int::times)
     }
 

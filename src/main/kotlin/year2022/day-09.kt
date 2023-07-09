@@ -21,7 +21,7 @@ class Part9(private val knotCount: Int, private val exampleData: String) : Part(
 
     override fun compute(): String {
         visited = mutableSetOf()
-        knots = List(knotCount + 1) { MutableVector(0, 0) }
+        knots = List(knotCount + 1) { MutableVector.at(0, 0) }
         lines.forEach {
             val (direction, count) = it.split(" ")
             repeat(count.toInt()) { executeStep(direction) }
@@ -31,10 +31,10 @@ class Part9(private val knotCount: Int, private val exampleData: String) : Part(
 
     private fun executeStep(direction: String) {
         when (direction) {
-            "U" -> knots[0] += Vector(0, 1)
-            "D" -> knots[0] -= Vector(0, 1)
-            "R" -> knots[0] += Vector(1, 0)
-            "L" -> knots[0] -= Vector(1, 0)
+            "U" -> knots[0] += Vector.at(0, 1)
+            "D" -> knots[0] -= Vector.at(0, 1)
+            "R" -> knots[0] += Vector.at(1, 0)
+            "L" -> knots[0] -= Vector.at(1, 0)
         }
         knots.windowed(2).forEach {
             val diff = it[0] - it[1]

@@ -35,7 +35,7 @@ open class PartA14 : Part() {
 
                     maxY = max(maxY, yEnd)
                     (yStart .. yEnd).forEach { y ->
-                        (xStart..xEnd).forEach { x -> cave.add(Vector(x, y)) }
+                        (xStart..xEnd).forEach { x -> cave.add(Vector.at(x, y)) }
                     }
                 }
             }
@@ -51,12 +51,12 @@ open class PartA14 : Part() {
         }
     }
 
-    private var vecLeft = Vector(-1, 0)
-    private var vecRight = Vector(1, 0)
-    private var vecDown = Vector(0, 1)
+    private var vecLeft = Vector.at(-1, 0)
+    private var vecRight = Vector.at(1, 0)
+    private var vecDown = Vector.at(0, 1)
 
     internal fun addSand(): Boolean {
-        var pos = Vector(500, 0)
+        var pos = Vector.at(500, 0)
         while (true) {
             if (pos.y > maxY) {
                 return false
@@ -84,11 +84,11 @@ open class PartA14 : Part() {
 class PartB14 : PartA14() {
     override fun compute(): String {
         sand = mutableSetOf()
-        (0 until 1000).forEach { cave.add(Vector(it, maxY + 2)) }
+        (0 until 1000).forEach { cave.add(Vector.at(it, maxY + 2)) }
         maxY += 3
         while (true) {
             addSand()
-            if (Vector(500, 0) in sand) {
+            if (Vector.at(500, 0) in sand) {
                 return sand.size.toString()
             }
         }

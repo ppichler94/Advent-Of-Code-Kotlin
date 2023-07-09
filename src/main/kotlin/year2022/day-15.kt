@@ -27,7 +27,7 @@ open class PartA15 : Part() {
             fun ofText(text: String): Sensor {
                 val matcher = """Sensor at x=(.*), y=(.*): closest beacon is at x=(.*), y=(.*)""".toRegex().matchEntire(text)
                 val (sensorX, sensorY, beaconX, beaconY) = matcher!!.destructured
-                return Sensor(Vector(sensorX.toInt(), sensorY.toInt()), Vector(beaconX.toInt(), beaconY.toInt()))
+                return Sensor(Vector.at(sensorX.toInt(), sensorY.toInt()), Vector.at(beaconX.toInt(), beaconY.toInt()))
             }
         }
     }

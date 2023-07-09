@@ -22,10 +22,10 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
         startPositions = hillsMap.flatMapIndexed { y, line ->
             line.mapIndexedNotNull { x, c ->
                 if (c == 'E') {
-                    endPosition = Vector(x, y)
+                    endPosition = Vector.at(x, y)
                 }
                 if (c == startChar) {
-                    Vector(x, y)
+                    Vector.at(x, y)
                 } else
                     null
             }
@@ -41,7 +41,7 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
     }
 
     private fun neighbours(node: Vector, t: TraversalBreadthFirstSearch<Vector>): List<Vector> {
-        return listOf(Vector(-1, 0), Vector(1, 0), Vector(0, -1), Vector(0, 1))
+        return listOf(Vector.at(-1, 0), Vector.at(1, 0), Vector.at(0, -1), Vector.at(0, 1))
             .map { it + node }
             .filter { it within listOf(limits[1], limits[0]) }
             .filter { elevationOfChar(hillsMap[it]) <= elevationOfChar(hillsMap[node.y][node.x]) + 1 }

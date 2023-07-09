@@ -2,9 +2,8 @@ package lib.math
 
 import kotlin.math.sqrt
 
-open class Vector(open val data: Array<Int>) {
-    constructor(vararg data: Int) : this(data.toTypedArray())
-    constructor(data: List<Int>) : this(data.toTypedArray())
+open class Vector(open val data: IntArray) {
+    constructor(data: List<Int>) : this(data.toIntArray())
 
     open val x: Int
         get() = data[0]
@@ -23,6 +22,8 @@ open class Vector(open val data: Array<Int>) {
         check(data.size > 3) { "A vector of size ${data.size} does not have component w" }
         return data[3]
     }
+
+    val size: Int = data.size
 
     operator fun get(index: Int): Int  {
         if (index >= data.size) {
@@ -57,11 +58,13 @@ open class Vector(open val data: Array<Int>) {
     override fun hashCode(): Int {
         return data.contentHashCode()
     }
+
+    companion object {
+        fun at(vararg coordinates: Int) = Vector(coordinates)
+    }
 }
 
-class MutableVector(override val data: Array<Int>) : Vector(data) {
-    constructor(vararg data: Int) : this(data.toTypedArray())
-
+class MutableVector(override val data: IntArray) : Vector(data) {
     override var x: Int
         get() = data[0]
         set(v) { data[0] = v }
@@ -116,6 +119,10 @@ class MutableVector(override val data: Array<Int>) : Vector(data) {
     }
 
     override fun toString(): String = "MutableVector(${data.joinToString()})"
+
+    companion object {
+        fun at(vararg coordinates: Int) = MutableVector(coordinates)
+    }
 }
 
 operator fun Vector.plus(other: Vector) = Vector((data zip other.data).map{ it.first + it.second })
