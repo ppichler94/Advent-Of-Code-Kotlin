@@ -27,7 +27,7 @@ class Puzzle(day: Int, year: Int) {
                 cache.writeFile("answer_${partName.value}", solution)
             } else {
                 Util.printlnColored("  >> Answer $solution was incorrect", Util.Color.RED)
-                cache.writeFile("incorrect_answers_${partName.value}", solution)
+                cache.addToFile("incorrect_answers_${partName.value}", solution)
             }
         }
     }

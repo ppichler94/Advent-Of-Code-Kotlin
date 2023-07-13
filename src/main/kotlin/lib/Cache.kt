@@ -15,6 +15,11 @@ class Cache(year: Int, day: Int) {
         file.writeText(data)
     }
 
+    fun addToFile(name: String, data: String) {
+        val file = File("${dir.absolutePath}/$name.txt")
+        file.appendText(data)
+    }
+
     fun readFile(name: String): String {
         val file = File("${dir.absolutePath}/$name.txt")
         return if (file.exists()) file.readText() else ""
