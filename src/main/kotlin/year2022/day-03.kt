@@ -27,7 +27,7 @@ open class PartA3 : Part() {
     }
 
     internal fun findCommonItem(lists: List<String>): Char {
-        return lists.map(String::toSet).fold(lists.first().toSet()) {
+        return lists.map(String::toSet).reduce {
             acc, part ->
             acc.toSet() intersect part.toSet()
         }.elementAtOrElse(0) { ' ' }

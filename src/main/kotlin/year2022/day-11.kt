@@ -31,7 +31,7 @@ open class PartA11(private val rounds: Int, private val worryLevelFactor: Int) :
         var itemsInspected: BigInteger = BigInteger.valueOf(0)
 
         fun turn(monkeys: List<Monkey>, worryLevelFactor: Int) {
-            val modulo = monkeys.fold(1) { acc, monkey -> acc * monkey.testNumer }
+            val modulo = monkeys.map(Monkey::testNumer).reduce(Int::times)
             items.forEach {
                 val old = it
                 var item = operation.action(old)
@@ -72,7 +72,7 @@ open class PartA11(private val rounds: Int, private val worryLevelFactor: Int) :
         return monkeys.map(Monkey::itemsInspected)
             .sorted()
             .takeLast(2)
-            .fold(BigInteger.ONE) { acc, x -> acc * x}
+            .reduce { acc, x -> acc * x}
             .toString()
     }
 
