@@ -119,6 +119,7 @@ class TraversalBreadthFirstSearch<T : Any>(private val neighbours: (T, Traversal
     private var toVisit = ArrayDeque<T>()
 
     override fun init(starts: List<T>) {
+        toVisit.clear()
         toVisit.addAll(starts)
     }
 
@@ -160,7 +161,9 @@ class TraversalDijkstra<T : Any>(
     val distance get() = costs[current] ?: 0f
 
     override fun init(starts: List<T>) {
+        toVisit.clear()
         toVisit.addAll(starts.associateWith { 0f }.toList())
+        costs.clear()
         costs.putAll(starts.associateWith { 0f })
     }
 
@@ -208,7 +211,9 @@ class TraversalAStar<T : Any>(
     private val costs = mutableMapOf<T, Float>()
 
     override fun init(starts: List<T>) {
+        toVisit.clear()
         toVisit.addAll(starts.associateWith { 0f }.toList())
+        costs.clear()
         costs.putAll(starts.associateWith { 0f })
     }
 
