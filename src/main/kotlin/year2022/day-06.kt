@@ -1,8 +1,8 @@
 package year2022
 
-import lib.Day
-import lib.Part
-import lib.TestCase
+import lib.aoc.Day
+import lib.aoc.Part
+import lib.aoc.TestCase
 
 fun main() {
     Day(6, 2022, PartA6(4), PartB6()).run()
@@ -17,7 +17,7 @@ open class PartA6(private var packetLength: Int) : Part() {
 
     override fun compute(): String {
         (packetLength until text.length).forEach {
-            if (allDifferent(text.slice(it-packetLength until it))) {
+            if (allDifferent(text.slice(it - packetLength until it))) {
                 return it.toString()
             }
         }

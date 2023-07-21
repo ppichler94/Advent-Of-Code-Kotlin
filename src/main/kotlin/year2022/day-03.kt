@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(3, 2022, PartA3(), PartB3()).run()
@@ -27,18 +27,17 @@ open class PartA3 : Part() {
     }
 
     internal fun findCommonItem(lists: List<String>): Char {
-        return lists.map(String::toSet).reduce {
-            acc, part ->
+        return lists.map(String::toSet).reduce { acc, part ->
             acc.toSet() intersect part.toSet()
         }.elementAtOrElse(0) { ' ' }
     }
 
     internal fun priorityOf(item: Char): Int {
         val charCode = item.code
-        if (charCode in 'a'.code .. 'z'.code) {
+        if (charCode in 'a'.code..'z'.code) {
             return 1 + charCode - 'a'.code
         }
-        if (charCode in 'A'.code .. 'Z'.code) {
+        if (charCode in 'A'.code..'Z'.code) {
             return 27 + charCode - 'A'.code
         }
         return 0

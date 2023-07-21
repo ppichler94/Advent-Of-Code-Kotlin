@@ -1,8 +1,11 @@
 package year2022
 
-import lib.Day
-import lib.Part
-import lib.math.*
+import lib.aoc.Day
+import lib.aoc.Part
+import lib.math.Vector
+import lib.math.plus
+import lib.math.plusAssign
+import lib.math.product
 
 fun main() {
     Day(8, 2022, PartA8(), PartB8()).run()

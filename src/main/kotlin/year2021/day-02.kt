@@ -1,7 +1,7 @@
 package year2021
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(2, 2021, PartA2(), PartB2()).run()
@@ -49,6 +49,7 @@ class PartB2 : PartA2() {
                     horizontalPos += count
                     depth += aim * count
                 }
+
                 "down" -> aim += count
                 "up" -> aim -= count
             }

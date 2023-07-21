@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(2, 2022, PartA2(), PartB2()).run()

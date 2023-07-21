@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
 import kotlin.math.abs
 import kotlin.math.max
@@ -25,7 +25,8 @@ open class PartA15 : Part() {
 
         companion object {
             fun ofText(text: String): Sensor {
-                val matcher = """Sensor at x=(.*), y=(.*): closest beacon is at x=(.*), y=(.*)""".toRegex().matchEntire(text)
+                val matcher =
+                    """Sensor at x=(.*), y=(.*): closest beacon is at x=(.*), y=(.*)""".toRegex().matchEntire(text)
                 val (sensorX, sensorY, beaconX, beaconY) = matcher!!.destructured
                 return Sensor(Vector.at(sensorX.toInt(), sensorY.toInt()), Vector.at(beaconX.toInt(), beaconY.toInt()))
             }
@@ -33,7 +34,7 @@ open class PartA15 : Part() {
     }
 
     internal lateinit var sensors: List<Sensor>
-    internal  var isExample: Boolean = false
+    internal var isExample: Boolean = false
 
     override fun parse(text: String) {
         sensors = text.split("\n").map(Sensor::ofText)

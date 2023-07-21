@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(7, 2022, PartA7(), PartB7()).run()
@@ -24,7 +24,7 @@ open class PartA7 : Part() {
 
         fun parseLs(lines: List<String>) {
             lines.forEach {
-                if (it.substring(0 .. 2) == "dir") {
+                if (it.substring(0..2) == "dir") {
                     val dir = Directory(it.drop(4), this)
                     directories.add(dir)
                 } else {
@@ -41,9 +41,10 @@ open class PartA7 : Part() {
         it.parseLs(value)
         it
     })
+
     class Cd(private val value: String) : Command({
         if (value == "..") {
-            it.parent !!
+            it.parent!!
         } else {
             it.directories.first { it.name == value }
         }
@@ -57,7 +58,7 @@ open class PartA7 : Part() {
         for (i in 1 until lines.size) {
             val parts = lines[i].split(" ")
             if (parts[0] == "$") {
-                when(parts[1]) {
+                when (parts[1]) {
                     "cd" -> currentDir = Cd(parts[2]).action(currentDir)
                     "ls" -> {
                         val lsLines = lines.drop(i + 1).takeWhile { it[0] != '$' }

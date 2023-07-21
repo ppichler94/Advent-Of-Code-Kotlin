@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
 import lib.math.minus
 import lib.math.plus
@@ -34,7 +34,7 @@ open class PartA14 : Part() {
                     val yEnd = max(y1.toInt(), y2.toInt())
 
                     maxY = max(maxY, yEnd)
-                    (yStart .. yEnd).forEach { y ->
+                    (yStart..yEnd).forEach { y ->
                         (xStart..xEnd).forEach { x -> cave.add(Vector.at(x, y)) }
                     }
                 }

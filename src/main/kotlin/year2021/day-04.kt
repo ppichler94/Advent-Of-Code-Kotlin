@@ -1,7 +1,7 @@
 package year2021
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import org.jetbrains.kotlinx.multik.api.linalg.dot
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray

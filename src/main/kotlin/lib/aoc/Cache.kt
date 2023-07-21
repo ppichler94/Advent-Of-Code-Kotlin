@@ -1,4 +1,4 @@
-package lib
+package lib.aoc
 
 import java.io.File
 

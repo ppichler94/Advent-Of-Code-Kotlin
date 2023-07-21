@@ -1,4 +1,4 @@
-package lib
+package lib.aoc
 
 class Day(private val day: Int, private val year: Int, private val partA: Part?, private val partB: Part?) {
     fun run() {

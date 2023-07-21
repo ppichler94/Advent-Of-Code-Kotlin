@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(4, 2022, PartA4(), PartB4()).run()
@@ -10,6 +10,7 @@ fun main() {
 
 open class PartA4 : Part() {
     data class Section(val start1: Int, val end1: Int, val start2: Int, val end2: Int)
+
     internal lateinit var sections: List<Section>
     override fun parse(text: String) {
         val regex = """\d+""".toRegex()
@@ -39,19 +40,16 @@ class PartB4 : PartA4() {
     }
 
     private fun overlaps(section: Section): Boolean {
-        if (section.start1 in section.start2 .. section.end2) {
+        if (section.start1 in section.start2..section.end2) {
             return true
         }
-        if (section.end1 in section.start2 .. section.end2) {
+        if (section.end1 in section.start2..section.end2) {
             return true
         }
-        if (section.start2 in section.start1 .. section.end1) {
+        if (section.start2 in section.start1..section.end1) {
             return true
         }
-        if (section.end2 in section.start1 .. section.end1) {
-            return true
-        }
-        return false
+        return section.end2 in section.start1..section.end1
     }
 
     override val exampleAnswer: String

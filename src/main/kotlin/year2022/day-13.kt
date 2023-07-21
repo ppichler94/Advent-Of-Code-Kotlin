@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import kotlin.math.sign
 
 fun main() {
@@ -28,18 +28,21 @@ open class PartA13 : Part() {
                     }
                     return Pair(result, index)
                 }
+
                 ',' -> {
                     if (number.isNotEmpty()) {
                         result.add(number.toInt())
                     }
                     number = ""
                 }
+
                 '[' -> {
                     val (list, i) = parseList(packet, index)
                     index = i
                     result.add(list)
                 }
-                in '0' .. '9' -> number += c
+
+                in '0'..'9' -> number += c
             }
         }
     }

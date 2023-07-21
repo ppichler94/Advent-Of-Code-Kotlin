@@ -1,9 +1,9 @@
 package year2022
 
-import lib.Day
 import lib.Grid2d
-import lib.Part
 import lib.Position
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
 import lib.math.unaryMinus
 

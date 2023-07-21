@@ -1,8 +1,8 @@
 package year2022
 
-import lib.Day
-import lib.Part
 import lib.TraversalBreadthFirstSearch
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
 
 fun main() {
@@ -15,7 +15,7 @@ open class PartA18 : Part() {
 
     override fun parse(text: String) {
         cubes = text.split("\n")
-            .map { it.split(",")}
+            .map { it.split(",") }
             .map { Vector.at(it[0].toInt(), it[1].toInt(), it[2].toInt()) }
     }
 
@@ -56,13 +56,13 @@ class PartB18 : PartA18() {
         fun nextNodes(node: Vector): List<Vector> {
             return node.neighbours()
                 .filter {
-                    it.x in lowerLimit.x .. upperLimit.x
-                    && it.y in lowerLimit.y .. upperLimit.y
-                    && it.z in lowerLimit.z .. upperLimit.z
+                    it.x in lowerLimit.x..upperLimit.x
+                            && it.y in lowerLimit.y..upperLimit.y
+                            && it.z in lowerLimit.z..upperLimit.z
                 }
         }
 
-        val traversal= TraversalBreadthFirstSearch { node, _ -> nextNodes(node)}
+        val traversal = TraversalBreadthFirstSearch { node, _ -> nextNodes(node) }
             .startFrom(lowerLimit)
             .withAlreadyVisited(cubes.toSet())
 

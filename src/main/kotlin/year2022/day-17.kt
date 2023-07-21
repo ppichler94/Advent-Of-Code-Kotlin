@@ -1,14 +1,16 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.api.zeros
 import org.jetbrains.kotlinx.multik.ndarray.data.D2Array
 import org.jetbrains.kotlinx.multik.ndarray.data.get
 import org.jetbrains.kotlinx.multik.ndarray.data.set
-import org.jetbrains.kotlinx.multik.ndarray.operations.*
+import org.jetbrains.kotlinx.multik.ndarray.operations.any
+import org.jetbrains.kotlinx.multik.ndarray.operations.append
+import org.jetbrains.kotlinx.multik.ndarray.operations.plus
 import kotlin.math.max
 
 fun main() {
@@ -24,26 +26,34 @@ open class PartA17 : Part() {
 
     private val rocks = listOf(
         mk.ndarray(mk[mk[1, 1, 1, 1]]),
-        mk.ndarray(mk[
-            mk[0, 1, 0],
-            mk[1, 1, 1],
-            mk[0, 1, 0]
-        ]),
-        mk.ndarray(mk[
-            mk[1, 1, 1],
-            mk[0, 0, 1],
-            mk[0, 0, 1]
-        ]),
-        mk.ndarray(mk[
-            mk[1],
-            mk[1],
-            mk[1],
-            mk[1]
-        ]),
-        mk.ndarray(mk[
-            mk[1, 1],
-            mk[1, 1]
-        ]),
+        mk.ndarray(
+            mk[
+                mk[0, 1, 0],
+                mk[1, 1, 1],
+                mk[0, 1, 0]
+            ]
+        ),
+        mk.ndarray(
+            mk[
+                mk[1, 1, 1],
+                mk[0, 0, 1],
+                mk[0, 0, 1]
+            ]
+        ),
+        mk.ndarray(
+            mk[
+                mk[1],
+                mk[1],
+                mk[1],
+                mk[1]
+            ]
+        ),
+        mk.ndarray(
+            mk[
+                mk[1, 1],
+                mk[1, 1]
+            ]
+        ),
     )
     internal lateinit var rocksIterator: Cycle<D2Array<Int>>
 
@@ -85,15 +95,15 @@ open class PartA17 : Part() {
                 cave = cave.append(mk.zeros(512, 7), 0)
             }
             val (dx, jetIndex) = jetsIterator.nextIndexed()
-            if (!intersects(rock, x+dx, y)) {
+            if (!intersects(rock, x + dx, y)) {
                 x += dx
             }
-            if (intersects(rock, x, y-1)) {
+            if (intersects(rock, x, y - 1)) {
                 addRock(rock, x, y)
                 height = max(height, y + rock.shape[0])
                 return jetIndex + 1
             }
-            y --
+            y--
         }
     }
 
@@ -104,14 +114,14 @@ open class PartA17 : Part() {
         if (y < 0) {
             return true
         }
-        return (cave[y until y + rock.shape[0], x until x + rock.shape[1]] + rock).any { it > 1}
+        return (cave[y until y + rock.shape[0], x until x + rock.shape[1]] + rock).any { it > 1 }
 
     }
 
     private fun addRock(rock: D2Array<Int>, x: Int, y: Int) {
         (0 until rock.shape[0]).forEach { dy ->
             (0 until rock.shape[1]).forEach { dx ->
-                cave[y+dy, x+dx] += rock[dy, dx]
+                cave[y + dy, x + dx] += rock[dy, dx]
             }
         }
     }
@@ -171,6 +181,7 @@ class PartB17 : PartA17() {
         }
         return (height + cycleHeight).toString()
     }
+
     override val exampleAnswer: String
         get() = "1514285714288"
 }

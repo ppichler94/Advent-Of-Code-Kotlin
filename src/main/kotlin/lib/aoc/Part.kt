@@ -1,5 +1,6 @@
-package lib
+package lib.aoc
 
+import lib.Util
 import kotlin.time.DurationUnit
 import kotlin.time.measureTimedValue
 

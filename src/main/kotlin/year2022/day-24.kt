@@ -1,7 +1,12 @@
 package year2022
 
-import lib.*
+import lib.Grid2d
+import lib.Position
+import lib.TraversalAStar
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
+import lib.memoize
 
 fun main() {
     Day(24, 2022, PartA24(), PartB24()).run()

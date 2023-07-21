@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 import java.math.BigInteger
 
 fun main() {
@@ -15,7 +15,7 @@ open class PartA11(private val rounds: Int, private val worryLevelFactor: Int) :
     sealed class Operation(val action: (BigInteger) -> BigInteger)
     class MulOperation(factor: Int) : Operation({ it * factor.toBigInteger() })
     class PowOperation : Operation({ it * it })
-    class AddOperation(summand: Int) : Operation({ it + summand.toBigInteger()})
+    class AddOperation(summand: Int) : Operation({ it + summand.toBigInteger() })
 
     private fun Operation(text: String): Operation {
         val (_, operator, right) = text.split(" ")
@@ -27,7 +27,13 @@ open class PartA11(private val rounds: Int, private val worryLevelFactor: Int) :
         }
     }
 
-    data class Monkey(val items: MutableList<BigInteger>, var operation: Operation, val testNumer: Int, val trueDestination: Int, val falseDestination: Int) {
+    data class Monkey(
+        val items: MutableList<BigInteger>,
+        var operation: Operation,
+        val testNumer: Int,
+        val trueDestination: Int,
+        val falseDestination: Int
+    ) {
         var itemsInspected: BigInteger = BigInteger.valueOf(0)
 
         fun turn(monkeys: List<Monkey>, worryLevelFactor: Int) {
@@ -72,7 +78,7 @@ open class PartA11(private val rounds: Int, private val worryLevelFactor: Int) :
         return monkeys.map(Monkey::itemsInspected)
             .sorted()
             .takeLast(2)
-            .reduce { acc, x -> acc * x}
+            .reduce { acc, x -> acc * x }
             .toString()
     }
 

@@ -1,4 +1,4 @@
-package lib
+package lib.aoc
 
 import org.jsoup.Jsoup
 import java.io.File

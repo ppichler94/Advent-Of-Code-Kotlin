@@ -1,8 +1,8 @@
 package year2022
 
-import lib.Day
-import lib.Part
-import lib.TestCase
+import lib.aoc.Day
+import lib.aoc.Part
+import lib.aoc.TestCase
 
 fun main() {
     Day(1, 2022, PartA1(), PartB1()).run()
@@ -13,7 +13,7 @@ open class PartA1 : Part() {
     override fun parse(text: String) {
         calories = text.split("\n\n")
             .map { it.split("\n") }
-            .map { it.map { s: String ->  s.toInt() } }
+            .map { it.map { s: String -> s.toInt() } }
             .map { it.sum() }
     }
 

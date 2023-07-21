@@ -1,6 +1,8 @@
 package year2022
 
-import lib.*
+import lib.TraversalBreadthFirstSearch
+import lib.aoc.Day
+import lib.aoc.Part
 import lib.math.Vector
 import lib.math.plus
 
@@ -47,8 +49,8 @@ open class Part12(private val startChar: Char, private val example: String) : Pa
             .filter { elevationOfChar(hillsMap[it]) <= elevationOfChar(hillsMap[node.y][node.x]) + 1 }
     }
 
-    private fun elevationOfChar(c: Char) = when(c) {
-        in 'a' .. 'z' -> c.code - 'a'.code
+    private fun elevationOfChar(c: Char) = when (c) {
+        in 'a'..'z' -> c.code - 'a'.code
         'S' -> 0
         'E' -> 25
         else -> throw IllegalArgumentException("invalid char $c")

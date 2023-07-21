@@ -1,8 +1,8 @@
 package year2022
 
-import lib.Day
-import lib.Part
 import lib.TraversalBreadthFirstSearch
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(16, 2022, PartA16(), PartB16()).run()
@@ -22,9 +22,9 @@ open class PartA16 : Part() {
         val regex = """Valve (.*) has flow rate=(\d+); tunnels? leads? to valves? (.*)""".toRegex()
         valves = text.split("\n")
             .map {
-            val (name, flowRate, links) = regex.find(it)!!.destructured
-            Valve(name, flowRate.toInt(), links.split(", "))
-        }.associateBy { it.name }
+                val (name, flowRate, links) = regex.find(it)!!.destructured
+                Valve(name, flowRate.toInt(), links.split(", "))
+            }.associateBy { it.name }
         maxFlowRate = valves.values.sumOf(Valve::flowRate)
 
         val significantValves = valves.values.filter { it.name == "AA" || it.flowRate > 0 }
@@ -33,7 +33,7 @@ open class PartA16 : Part() {
                 .startFrom(from.name)
                 .traverseAll()
             from.name to significantValves.filter { it != from && it.name != "AA" }
-                .associate { to -> to.name to traversal.getPath(to.name).size  }
+                .associate { to -> to.name to traversal.getPath(to.name).size }
         }
         remainingValves = significantValves.filter { it.name != "AA" }.toSet()
     }

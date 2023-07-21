@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(10, 2022, PartA10(), PartB10()).run()
@@ -17,7 +17,7 @@ open class PartA10 : Part() {
             var x = 1
             lines.forEach {
                 val parts = it.split(" ")
-                when(parts[0]) {
+                when (parts[0]) {
                     "noop" -> yield(x)
                     "addx" -> {
                         yield(x)
@@ -53,7 +53,7 @@ class PartB10 : PartA10() {
     override fun compute(): String {
         sequence.forEachIndexed { i, x ->
             val col = i % 40
-            print(if (col in (x - 1) .. (x + 1)) "#" else ".")
+            print(if (col in (x - 1)..(x + 1)) "#" else ".")
             if (col == 39) {
                 println()
             }

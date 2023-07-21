@@ -1,9 +1,9 @@
 package year2022
 
-import lib.Day
-import lib.Part
 import lib.Traversal
 import lib.TraversalDijkstra
+import lib.aoc.Day
+import lib.aoc.Part
 import year2022.PartA19.Materials.Type.*
 import kotlin.math.max
 

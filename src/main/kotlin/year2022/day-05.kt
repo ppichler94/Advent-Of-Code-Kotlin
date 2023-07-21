@@ -1,7 +1,7 @@
 package year2022
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(5, 2022, PartA5(), PartB5()).run()
@@ -10,6 +10,7 @@ fun main() {
 
 open class PartA5 : Part() {
     data class Command(val origin: Int, val destination: Int, val count: Int)
+
     internal lateinit var stacks: MutableList<String>
     internal var commands: MutableList<Command> = mutableListOf()
 
@@ -20,7 +21,7 @@ open class PartA5 : Part() {
         stacks = MutableList(numberOfStacks) { "" }
         stackLines.forEach {
             it.forEachIndexed { i, char ->
-                if (char in 'A' .. 'Z') {
+                if (char in 'A'..'Z') {
                     val pos = (i - 1) / 4
                     stacks[pos] += char.toString()
                 }
@@ -32,7 +33,7 @@ open class PartA5 : Part() {
         val moveMatcher = """move (\d+) from (\d+) to (\d+)""".toRegex()
         movesText.split("\n").forEach {
             val matches = moveMatcher.matchEntire(it)
-            matches?. let {
+            matches?.let {
                 val (count, origin, destination) = matches.destructured
                 commands.add(Command(origin.toInt() - 1, destination.toInt() - 1, count.toInt()))
             }
@@ -44,7 +45,7 @@ open class PartA5 : Part() {
         return stacks.map { it.last() }.joinToString("")
     }
 
-    open internal fun crateMover() {
+    internal open fun crateMover() {
         commands.forEach { command ->
             for (i in 0 until command.count) {
                 stacks[command.destination] += stacks[command.origin].last().toString()

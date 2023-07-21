@@ -1,4 +1,6 @@
-package lib
+package lib.aoc
+
+import lib.Util
 
 class Puzzle(day: Int, year: Int) {
 

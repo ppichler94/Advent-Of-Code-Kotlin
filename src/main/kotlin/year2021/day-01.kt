@@ -1,7 +1,7 @@
 package year2021
 
-import lib.Day
-import lib.Part
+import lib.aoc.Day
+import lib.aoc.Part
 
 fun main() {
     Day(1, 2021, PartA1(), PartB1()).run()
@@ -30,7 +30,7 @@ class PartB1 : PartA1() {
     override fun compute(): String {
         return numbers
             .windowed(3)
-            .map{ it.sum() }
+            .map { it.sum() }
             .windowed(2)
             .count { (a, b) -> b > a }
             .toString()
