@@ -65,7 +65,7 @@ data class Position(val position: Vector) {
                 (-1..1).product(-1..1)
                     .map { Vector.at(it.first, it.second) }
                     .filter {
-                        (zeroMove || (it.x != 0 && it.y != 0))
+                        (zeroMove || (it.x != 0 || it.y != 0))
                                 && (diagonals || (abs(it.x) + abs(it.y) <= 1))
                     }
             }
