@@ -17,6 +17,7 @@ class Cache(year: Int, day: Int) {
 
     fun addToFile(name: String, data: String) {
         val file = File("${dir.absolutePath}/$name.txt")
+        file.appendText("\n")
         file.appendText(data)
     }
 
