@@ -6,7 +6,7 @@ import lib.math.plus
 import lib.math.product
 import kotlin.math.abs
 
-data class Grid2d<T>(val content: Iterable<Iterable<T>>) {
+sealed class BaseGrid2d<T>(private val content: Iterable<Iterable<T>>) {
 
     /**
      * size of each dimension of the grid in the following order x, y
@@ -37,11 +37,34 @@ data class Grid2d<T>(val content: Iterable<Iterable<T>>) {
         }
     }
 
+    /**
+     * Find content in the grid matching the given predicate and return found positions.
+     * @param predicate Function that takes the element and returns the result of predicate evaluation on the element
+     */
+    fun findAll(predicate: (T) -> Boolean) = buildList {
+        content.forEachIndexed { y, innerIterable ->
+            innerIterable.forEachIndexed { x, element ->
+                if (predicate(element)) {
+                    add(Position.at(x, y))
+                }
+            }
+        }
+    }
+}
+
+data class Grid2d<T>(val content: Iterable<Iterable<T>>) : BaseGrid2d<T>(content) {
     companion object {
         /**
          * Creates a grid of type Char where each line is a row of the grid.
          */
         fun ofLines(lines: List<String>): Grid2d<Char> = Grid2d(lines.map { it.toList() })
+    }
+}
+
+data class MutableGrid2d<T>(val content: MutableList<MutableList<T>>) : BaseGrid2d<T>(content) {
+    operator fun set(position: Position, value: T) {
+        check(position.size == 2) { "Position must be of size 2" }
+        content[position[1]][position[0]] = value
     }
 }
 
