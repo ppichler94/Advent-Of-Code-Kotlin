@@ -26,9 +26,7 @@ open class Vector(open val data: IntArray) {
     val size: Int = data.size
 
     operator fun get(index: Int): Int  {
-        if (index >= data.size) {
-            throw IllegalArgumentException("index must be in 0..${data.size - 1}")
-        }
+        require(index < data.size) { "index must be in 0..${data.size - 1}" }
         return data[index]
     }
 
@@ -36,9 +34,7 @@ open class Vector(open val data: IntArray) {
 
     infix fun within(range: Iterable<Int>) = data.all { it in range }
     infix fun within(range: List<Iterable<Int>>): Boolean {
-        if (range.size < data.size) {
-            throw IllegalArgumentException("length of range != length of vector")
-        }
+        require(range.size >= data.size) { "length of range != length of vector" }
         return (data zip range).all { it.first in it.second }
     }
 
@@ -94,9 +90,7 @@ class MutableVector(override val data: IntArray) : Vector(data) {
         }
 
     operator fun set(index: Int, v: Int) {
-        if (index >= data.size) {
-            throw IllegalArgumentException("index must be in 0..${data.size - 1}")
-        }
+        require(index < data.size) { "index must be in 0..${data.size - 1}" }
         data[index] = v
     }
 
