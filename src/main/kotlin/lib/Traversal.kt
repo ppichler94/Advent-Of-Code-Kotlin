@@ -210,6 +210,8 @@ class TraversalAStar<T : Any>(
     private val toVisit = PriorityQueue(compareBy<Pair<T, Float>> { it.second })
     private val costs = mutableMapOf<T, Float>()
 
+    fun distance(to: T): Float = costs.getValue(to)
+
     override fun init(starts: List<T>) {
         toVisit.clear()
         toVisit.addAll(starts.associateWith { 0f }.toList())
