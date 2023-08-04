@@ -6,6 +6,14 @@ fun <T, S> Iterable<T>.product(other: Iterable<S>): List<Pair<T, S>> {
     }
 }
 
+fun <T> Iterable<T>.combinations(): List<Pair<T, T>> = buildList {
+    for (i in 0..<this@combinations.count()) {
+        for (j in i+1..<this@combinations.count()) {
+            add(this@combinations.elementAt(i) to this@combinations.elementAt(j))
+        }
+    }
+}
+
 object Itertools {
     fun count(start: Int = 0): Iterator<Int> {
         return object : Iterator<Int> {

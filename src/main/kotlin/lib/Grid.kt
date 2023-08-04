@@ -159,6 +159,9 @@ data class Position(val position: Vector) {
      */
     fun manhattanDistance(target: Position): Int {
         return (this - target.position).position.data.sumOf { abs(it) }
+    }
 
+    fun squaredDistance(target: Position): Int {
+        return (this - target.position).position.data.sumOf { it * it }
     }
 }
