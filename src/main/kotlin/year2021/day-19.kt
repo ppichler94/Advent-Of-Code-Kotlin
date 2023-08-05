@@ -45,19 +45,10 @@ open class PartA19 : Part() {
         }
 
         var beacons: List<Position> = listOf()
-        var position: Position? = null
+        var position: Position = Position.at(0, 0, 0)
+            private set
 
-        val distances get() = getDistancesInternal()
-
-        fun rotate(rotation: Int) {
-            beacons = beacons.map { it.rotate(rotation) }
-        }
-
-        fun moveBeacons() {
-            beacons = beacons.map { it + position!!.position }
-        }
-
-        private fun getDistancesInternal(): Map<Position, List<Int>> {
+        val distances get(): Map<Position, List<Int>> {
             val beaconsMap = mutableMapOf<Position, List<Int>>()
             beacons.indices.combinations().forEach { (i, j) ->
                 val distance = beacons[i].squaredDistance(beacons[j])
@@ -65,6 +56,12 @@ open class PartA19 : Part() {
                 beaconsMap[beacons[j]] = (beaconsMap[beacons[j]] ?: emptyList()) + distance
             }
             return beaconsMap
+        }
+
+        fun setPositionAndRotation(position: Position, rotation: Int) {
+            this.position = position
+            beacons = beacons.map { it.rotate(rotation) }
+            beacons = beacons.map { it + position.position }
         }
 
         companion object {
@@ -85,7 +82,7 @@ open class PartA19 : Part() {
 
     override fun parse(text: String) {
         val scannerText = text.split("\n\n")
-        val originScanner = Scanner.ofText(scannerText.first()).apply { position = Position.at(0, 0, 0) }
+        val originScanner = Scanner.ofText(scannerText.first())
         scanners = mutableListOf(originScanner)
         unprocessedScanners = scannerText.drop(1).map(Scanner::ofText).toMutableList()
     }
@@ -133,9 +130,7 @@ open class PartA19 : Part() {
             val distances = matchingBeacons.map { it.first.squaredDistance(it.second.rotate(rotation)) }
             if (distances.toSet().size == 1) {
                 val offset = matchingBeacons.first().first - matchingBeacons.first().second.rotate(rotation).position
-                toMatch.position = offset
-                toMatch.rotate(rotation)
-                toMatch.moveBeacons()
+                toMatch.setPositionAndRotation(offset, rotation)
                 scanners.add(toMatch)
                 unprocessedScanners.remove(toMatch)
                 return
@@ -156,7 +151,7 @@ class PartB19 : PartA19() {
         processScanners()
         return scanners
             .combinations()
-            .maxOf { it.first.position!!.manhattanDistance(it.second.position!!) }
+            .maxOf { it.first.position.manhattanDistance(it.second.position) }
             .toString()
     }
 
