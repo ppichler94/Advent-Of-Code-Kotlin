@@ -1,0 +1,12 @@
+= Advent-Of-Code-Kotlin
+
+image:https://img.shields.io/github/license/ppichler94/Advent-Of-Code[License: MIT]
+image:https://img.shields.io/badge/Advent%20of%20Code-2021--2023-orange[Advent of Code 2021-2023]
+image:https://img.shields.io/badge/Kotlin-1.9-blue[Kotlin 1.9]
+image:https://img.shields.io/github/last-commit/ppichler94/Advent-Of-Code-Kotlin[last commit]
+
+My Solutions for the Advent of Code challenges in Kotlin (see https://adventofcode.com/)
+
+The input is automatically downloaded and the solution submitted.
+To reduce the load of the https://adventofcode.com/ API, the input and result are cached in the `.data` folder.
+If you want to invalidate the cache, you have to delete the respective file.
