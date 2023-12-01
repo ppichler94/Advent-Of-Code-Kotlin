@@ -31,7 +31,7 @@ class ApiClient(year: Int, day: Int) {
         if (response.statusCode() != 200) {
             throw IllegalStateException("submit answer failed. Got ${response.statusCode()} status code")
         }
-        if (response.body().contains("the right answer")) {
+        if (response.body().contains("That's the right answer!")) {
             return true
         }
         if (response.body().contains("Did you already complete it")) {
@@ -44,7 +44,7 @@ class ApiClient(year: Int, day: Int) {
     private fun postBodyData(part: PartName, solution: String): HttpRequest.BodyPublisher {
         fun String.utf8(): String = URLEncoder.encode(this, "UTF-8")
         val data = mapOf("level" to part.value.toString(), "answer" to solution)
-        val result = data.map {(k, v) -> "${(k.utf8())}=${v.utf8()}"}
+        val result = data.map { (k, v) -> "${(k.utf8())}=${v.utf8()}" }
             .joinToString("&")
         return HttpRequest.BodyPublishers.ofString(result)
     }

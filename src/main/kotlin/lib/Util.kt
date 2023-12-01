@@ -1,5 +1,7 @@
 package lib
 
+fun String.splitLines() = this.split("\n")
+
 class Util {
     enum class Color(val code: Int) {
         RED(31),
