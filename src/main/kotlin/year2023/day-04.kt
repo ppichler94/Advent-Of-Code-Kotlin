@@ -11,7 +11,11 @@ fun main() {
 }
 
 open class PartA4 : Part() {
-    protected data class Card(val id: Int, val winningNumbers: List<Int>, val yourNumbers: List<Int>) {
+    protected data class Card(
+        val id: Int,
+        val winningNumbers: List<Int>,
+        val yourNumbers: List<Int>,
+    ) {
         val points: Int
             get() = yourNumbers.count { it in winningNumbers }
 
@@ -33,14 +37,13 @@ open class PartA4 : Part() {
         cards = text.splitLines().map(Card::ofLine)
     }
 
-    override fun compute(): String {
-        return cards
+    override fun compute(): String =
+        cards
             .map { it.points }
             .filter { it > 0 }
             .map { it - 1 }
             .sumOf { 2.0.pow(it.toDouble()).toInt() }
             .toString()
-    }
 
     override val exampleAnswer: String
         get() = "13"
@@ -48,21 +51,27 @@ open class PartA4 : Part() {
 
 class PartB4 : PartA4() {
     private val pointsFn = ::points.memoize()
+
     override fun compute(): String {
-        val cardMap = cards.indices
-            .associate { index ->
-                index + 1 to cards
-                    .drop(index + 1)
-                    .take(cards[index].points)
-                    .map { it.id }
-            }
+        val cardMap =
+            cards.indices
+                .associate { index ->
+                    index + 1 to
+                        cards
+                            .drop(index + 1)
+                            .take(cards[index].points)
+                            .map { it.id }
+                }
 
         return cards.indices
             .sumOf { pointsFn(cardMap, it + 1) }
             .toString()
     }
 
-    private fun points(cardMap: Map<Int, List<Int>>, cardId: Int): Int {
+    private fun points(
+        cardMap: Map<Int, List<Int>>,
+        cardId: Int,
+    ): Int {
         if (cardMap[cardId] == null || cardMap[cardId]?.isEmpty() == true) {
             return 1
         }

@@ -9,7 +9,11 @@ fun main() {
 }
 
 open class PartA7 : Part() {
-    protected data class Hand(val cards: String, val bid: Int, val strength: Int)
+    protected data class Hand(
+        val cards: String,
+        val bid: Int,
+        val strength: Int,
+    )
 
     protected open fun getStrength(cards: String): Int {
         val counts = cards.groupingBy { it }.eachCount().toMutableMap()
@@ -24,43 +28,46 @@ open class PartA7 : Part() {
         }
     }
 
-    protected val cardValues = mutableMapOf(
-        'A' to 14,
-        'K' to 13,
-        'Q' to 12,
-        'J' to 11,
-        'T' to 10,
-        '9' to 9,
-        '8' to 8,
-        '7' to 7,
-        '6' to 6,
-        '5' to 5,
-        '4' to 4,
-        '3' to 3,
-        '2' to 2,
-    )
+    protected val cardValues =
+        mutableMapOf(
+            'A' to 14,
+            'K' to 13,
+            'Q' to 12,
+            'J' to 11,
+            'T' to 10,
+            '9' to 9,
+            '8' to 8,
+            '7' to 7,
+            '6' to 6,
+            '5' to 5,
+            '4' to 4,
+            '3' to 3,
+            '2' to 2,
+        )
 
-    private val handComparator = Comparator<Hand> { p1, p2 ->
-        if (p1.strength != p2.strength) {
-            return@Comparator p1.strength - p2.strength
+    private val handComparator =
+        Comparator<Hand> { p1, p2 ->
+            if (p1.strength != p2.strength) {
+                return@Comparator p1.strength - p2.strength
+            }
+
+            val difference = (p1.cards zip p2.cards).firstOrNull { it.first != it.second }
+            if (difference != null) {
+                return@Comparator cardValues[difference.first]!! - cardValues[difference.second]!!
+            }
+
+            0
         }
-
-        val difference = (p1.cards zip p2.cards).firstOrNull { it.first != it.second }
-        if (difference != null) {
-            return@Comparator cardValues[difference.first]!! - cardValues[difference.second]!!
-        }
-
-        0
-    }
 
     private lateinit var hands: List<Hand>
 
     override fun parse(text: String) {
         val lines = text.splitLines()
-        hands = lines.map {
-            val (cards, bid) = it.split(" ")
-            Hand(cards, bid.toInt(), getStrength(cards))
-        }
+        hands =
+            lines.map {
+                val (cards, bid) = it.split(" ")
+                Hand(cards, bid.toInt(), getStrength(cards))
+            }
     }
 
     override fun compute(): String {

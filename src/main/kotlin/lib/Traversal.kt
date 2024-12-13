@@ -51,15 +51,14 @@ sealed class Traversal<T : Any> : Iterable<T> {
     /**
      * Returns the path from the start of the traversal to the specified end vertex
      */
-    fun getPath(to: T): List<T> {
-        return buildList {
+    fun getPath(to: T): List<T> =
+        buildList {
             var current = to
             while (cameFrom[current] != null && cameFrom[current] != current) {
                 add(current)
                 current = cameFrom.getValue(current)
             }
         }.asReversed()
-    }
 
     /**
      * Returns the path from the start of the traversal to the end vertex of the traversal. The end vertex must have
@@ -80,7 +79,6 @@ sealed class Traversal<T : Any> : Iterable<T> {
         return this
     }
 
-
     /**
      * Marks vertices as already visited. This means that the specified vertices are not visited again.
      */
@@ -92,18 +90,19 @@ sealed class Traversal<T : Any> : Iterable<T> {
     protected abstract fun init(starts: List<T>)
 
     protected abstract fun nextNode(): T
+
     protected abstract fun hasNextNode(): Boolean
 
     /**
      * Returns the iterator of a started traversal. This allows to iterate the traversal in a for-loop and stop on a
      * specific condition (i.e. the end is unknown)
      */
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): Iterator<T> =
+        object : Iterator<T> {
             override fun hasNext() = hasNextNode()
+
             override fun next() = nextNode()
         }
-    }
 }
 
 /**
@@ -115,7 +114,9 @@ sealed class Traversal<T : Any> : Iterable<T> {
  * an empty list should be returned
  *
  */
-class TraversalBreadthFirstSearch<T : Any>(private val neighbours: (T, TraversalBreadthFirstSearch<T>) -> Iterable<T>) : Traversal<T>() {
+class TraversalBreadthFirstSearch<T : Any>(
+    private val neighbours: (T, TraversalBreadthFirstSearch<T>) -> Iterable<T>,
+) : Traversal<T>() {
     private var toVisit = ArrayDeque<T>()
 
     override fun init(starts: List<T>) {

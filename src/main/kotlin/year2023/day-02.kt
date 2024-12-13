@@ -9,12 +9,17 @@ fun main() {
 }
 
 open class PartA2 : Part() {
-    data class Game(var id: Int, var sets: List<Set>)
+    data class Game(
+        var id: Int,
+        var sets: List<Set>,
+    )
 
-    data class Set(var red: Int, var green: Int, var blue: Int) {
-        operator fun plus(other: Set): Set {
-            return Set(red + other.red, green + other.green, blue + other.blue)
-        }
+    data class Set(
+        var red: Int,
+        var green: Int,
+        var blue: Int,
+    ) {
+        operator fun plus(other: Set): Set = Set(red + other.red, green + other.green, blue + other.blue)
 
         companion object {
             /**
@@ -23,10 +28,12 @@ open class PartA2 : Part() {
              * Colors may be missing and additional whitespace is trimmed.
              */
             fun fromString(text: String): Set {
-                val cubes = text.trim()
-                    .split(",")
-                    .map { it.trim().split(" ") }
-                    .associate { it.last() to it.first().toInt() }
+                val cubes =
+                    text
+                        .trim()
+                        .split(",")
+                        .map { it.trim().split(" ") }
+                        .associate { it.last() to it.first().toInt() }
                 return Set(cubes["red"] ?: 0, cubes["green"] ?: 0, cubes["blue"] ?: 0)
             }
         }
@@ -36,35 +43,37 @@ open class PartA2 : Part() {
 
     override fun parse(text: String) {
         val regex = """Game (\d+):(.*)""".toRegex()
-        games = text.splitLines()
-            .map {
-                val result = regex.matchEntire(it)
-                val (id, rest) = result!!.destructured
-                val sets = rest.split(";").map(Set::fromString)
-                Game(id.toInt(), sets)
-            }
+        games =
+            text
+                .splitLines()
+                .map {
+                    val result = regex.matchEntire(it)
+                    val (id, rest) = result!!.destructured
+                    val sets = rest.split(";").map(Set::fromString)
+                    Game(id.toInt(), sets)
+                }
     }
 
-    override fun compute(): String {
-        return games.filter {
-            it.sets.all { it.red <= 12 && it.green <= 13 && it.blue <= 14 }
-        }.sumOf { it.id }.toString()
-
-    }
+    override fun compute(): String =
+        games
+            .filter {
+                it.sets.all { it.red <= 12 && it.green <= 13 && it.blue <= 14 }
+            }.sumOf { it.id }
+            .toString()
 
     override val exampleAnswer: String
         get() = "8"
 }
 
 class PartB2 : PartA2() {
-    override fun compute(): String {
-        return games.sumOf {
-            val red = it.sets.maxOf(Set::red)
-            val green = it.sets.maxOf(Set::green)
-            val blue = it.sets.maxOf(Set::blue)
-            red * green * blue
-        }.toString()
-    }
+    override fun compute(): String =
+        games
+            .sumOf {
+                val red = it.sets.maxOf(Set::red)
+                val green = it.sets.maxOf(Set::green)
+                val blue = it.sets.maxOf(Set::blue)
+                red * green * blue
+            }.toString()
 
     override val exampleAnswer: String
         get() = "2286"
