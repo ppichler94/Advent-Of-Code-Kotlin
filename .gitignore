@@ -16,6 +16,8 @@
 # SonarLint plugin
 .idea/sonarlint/
 
+.idea/
+
 # Compiled class file
 *.class
 
