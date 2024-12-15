@@ -58,6 +58,8 @@ sealed class BaseGrid2d<T>(
 data class Grid2d<T>(
     val content: Iterable<Iterable<T>>,
 ) : BaseGrid2d<T>(content) {
+    fun toMutable(): MutableGrid2d<T> = MutableGrid2d(content.map { it.toMutableList() }.toMutableList())
+
     companion object {
         /**
          * Creates a grid of type Char where each line is a row of the grid.

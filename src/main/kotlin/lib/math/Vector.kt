@@ -58,6 +58,11 @@ open class Vector(
 
     companion object {
         fun at(vararg coordinates: Int) = Vector(coordinates)
+
+        val UP = Vector.at(0, -1)
+        val LEFT = Vector.at(-1, 0)
+        val DOWN = Vector.at(0, 1)
+        val RIGHT = Vector.at(1, 0)
     }
 }
 
