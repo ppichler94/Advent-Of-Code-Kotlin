@@ -26,7 +26,7 @@ open class PartA7 : Part() {
 
     override fun compute(): String = equations.filter { checkEquation(0, it.target, it.values) }.sumOf { it.target }.toString()
 
-    protected open fun checkEquation(
+    private fun checkEquation(
         acc: Long,
         target: Long,
         values: List<Long>,
@@ -37,29 +37,24 @@ open class PartA7 : Part() {
         if (acc > target) {
             return false
         }
-        return checkEquation(acc + values.first(), target, values.drop(1)) || checkEquation(acc * values.first(), target, values.drop(1))
+
+        return tryOperations(acc, values.first()).any { checkEquation(it, target, values.drop(1)) }
     }
+
+    protected open fun tryOperations(
+        acc: Long,
+        nextValue: Long,
+    ): List<Long> = listOf(acc + nextValue, acc * nextValue)
 
     override val exampleAnswer: String
         get() = "3749"
 }
 
 class PartB7 : PartA7() {
-    override fun checkEquation(
+    override fun tryOperations(
         acc: Long,
-        target: Long,
-        values: List<Long>,
-    ): Boolean {
-        if (values.isEmpty()) {
-            return acc == target
-        }
-        if (acc > target) {
-            return false
-        }
-        return checkEquation(acc + values.first(), target, values.drop(1)) ||
-            checkEquation(acc * values.first(), target, values.drop(1)) ||
-            checkEquation((acc.toString() + values.first().toString()).toLong(), target, values.drop(1))
-    }
+        nextValue: Long,
+    ): List<Long> = listOf(acc + nextValue, acc * nextValue, (acc.toString() + nextValue.toString()).toLong())
 
     override val exampleAnswer: String
         get() = "11387"
