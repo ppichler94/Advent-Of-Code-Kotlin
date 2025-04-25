@@ -6,6 +6,12 @@ fun <T, S> Iterable<T>.product(other: Iterable<S>): List<Pair<T, S>> {
     }
 }
 
+fun <T> Iterable<T>.product(): List<Pair<T, T>> {
+    return this.flatMap { outer ->
+        this.map { Pair(outer, it) }
+    }
+}
+
 fun <T> Iterable<T>.combinations(): List<Pair<T, T>> = buildList {
     for (i in 0..<this@combinations.count()) {
         for (j in i+1..<this@combinations.count()) {
