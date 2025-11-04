@@ -41,8 +41,13 @@ open class PartA4 : Part() {
             } else {
                 emptyList()
             }
-        }.startFrom(grid.findAll(listOf('X')).flatMap { Position.moves(diagonals = true).map { dir -> State(it, dir, 'X') } })
-            .traverseAll()
+        }.startFrom(
+            grid.findAll(listOf('X')).flatMap {
+                Position.moves(diagonals = true).map { dir ->
+                    State(it, dir, 'X')
+                }
+            },
+        ).traverseAll()
             .visited
             .filter { it.char == 'S' }
             .toSet()

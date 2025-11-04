@@ -9,11 +9,12 @@ fun main() {
 
 open class PartA2 : Part() {
     internal lateinit var lines: List<String>
-    internal val winLossMatrix = arrayOf(
-        arrayOf(3, 6, 0),
-        arrayOf(0, 3, 6),
-        arrayOf(6, 0, 3),
-    )
+    internal val winLossMatrix =
+        arrayOf(
+            arrayOf(3, 6, 0),
+            arrayOf(0, 3, 6),
+            arrayOf(6, 0, 3),
+        )
 
     override fun parse(text: String) {
         lines = text.split("\n")
@@ -30,25 +31,25 @@ open class PartA2 : Part() {
         return score.toString()
     }
 
-    internal fun decodeShape(code: String): Int {
-        return when (code) {
+    internal fun decodeShape(code: String): Int =
+        when (code) {
             "A", "X" -> 0
             "B", "Y" -> 1
             "C", "Z" -> 2
             else -> throw IllegalArgumentException("Invalid code: $code")
         }
-    }
 
     override val exampleAnswer: String
         get() = "15"
 }
 
 class PartB2 : PartA2() {
-    internal val choiceMatrix = arrayOf(
-        arrayOf(2, 0, 1),
-        arrayOf(0, 1, 2),
-        arrayOf(1, 2, 0),
-    )
+    internal val choiceMatrix =
+        arrayOf(
+            arrayOf(2, 0, 1),
+            arrayOf(0, 1, 2),
+            arrayOf(1, 2, 0),
+        )
 
     override fun compute(): String {
         var score = 0

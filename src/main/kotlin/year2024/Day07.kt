@@ -24,7 +24,12 @@ open class PartA7 : Part() {
             }
     }
 
-    override fun compute(): String = equations.filter { checkEquation(0, it.target, it.values) }.sumOf { it.target }.toString()
+    override fun compute(): String =
+        equations
+            .filter {
+                checkEquation(0, it.target, it.values)
+            }.sumOf { it.target }
+            .toString()
 
     private fun checkEquation(
         acc: Long,
