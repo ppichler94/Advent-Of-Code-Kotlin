@@ -1,8 +1,8 @@
 = Advent-Of-Code-Kotlin
 
 image:https://img.shields.io/github/license/ppichler94/Advent-Of-Code[License: MIT]
-image:https://img.shields.io/badge/Advent%20of%20Code-2021--2023-orange[Advent of Code 2021-2023]
-image:https://img.shields.io/badge/Kotlin-1.9-blue[Kotlin 1.9]
+image:https://img.shields.io/badge/Advent%20of%20Code-2021--2025-orange[Advent of Code 2021-2025]
+image:https://img.shields.io/badge/Kotlin-2.1-blue[Kotlin 2.1]
 image:https://img.shields.io/github/last-commit/ppichler94/Advent-Of-Code-Kotlin[last commit]
 
 My Solutions for the Advent of Code challenges in Kotlin (see https://adventofcode.com/)
